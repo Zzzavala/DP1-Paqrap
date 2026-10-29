@@ -1,0 +1,4 @@
+1. Doble clic en COMPILAR.bat (la primera vez; necesita internet).
+2. Doble clic en INICIAR.bat. Se abre http://localhost:8080
+3. Para apagarlo: DETENER.bat
+Cambios de la version final: CAMBIOS-sem11.txt. Diagramas: carpeta docs.

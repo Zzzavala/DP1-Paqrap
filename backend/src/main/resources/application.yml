@@ -1,0 +1,64 @@
+# PaqRap - configuracion del backend.
+# Todos los valores se pueden cambiar con variables de entorno (Docker, Render, AWS).
+server:
+  port: ${PORT:8080}
+  shutdown: graceful
+  compression:
+    enabled: true
+    mime-types: application/json,text/html,text/css,application/javascript,text/javascript,text/csv,text/plain,image/svg+xml
+    min-response-size: 2048
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: paqrap
+  datasource:
+    # Por defecto H2 en archivo dentro de la carpeta de datos del servicio.
+    # En AWS se puede usar PostgreSQL (RDS): SPRING_DATASOURCE_URL=jdbc:postgresql://host:5432/paqrap
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:file:${PAQRAP_DATOS_DIR:./datos-app}/paqrap;DB_CLOSE_ON_EXIT=FALSE}
+    username: ${SPRING_DATASOURCE_USERNAME:sa}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 200
+        order_inserts: true
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+  data:
+    web:
+      pageable:
+        serialization-mode: via_dto
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+
+paqrap:
+  # Carpeta opcional con archivos ventas.AAAAMM.txt / bloqueo.AAMM.txt que reemplazan o amplian los publicados.
+  datos-externos-dir: ${PAQRAP_DATOS_EXTERNOS:./datos-externos}
+  # Origenes permitidos para llamar a la API desde otro dominio (por ejemplo, el frontend en Vercel).
+  cors-origenes: ${PAQRAP_CORS_ORIGENES:*}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: WARN
+    org.hibernate.orm.deprecation: ERROR

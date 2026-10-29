@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 600" width="1160" height="600" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="1160" height="600" fill="#ffffff"/>
+  <text x="30" y="38" font-size="22" font-weight="700" fill="#0f3d5c">PaqRap · Cómo se consumen los datos (salto Sc) en cada bloque del planificador (salto Sa)</text>
+  <text x="30" y="62" font-size="13" fill="#4a5a67">Simulación 5D por defecto: 5 días simulados en 45 min reales → factor 160× (1 s real = 2 min 40 s simulados). Mismo motor para los 3 escenarios; solo cambia el reloj.</text>
+
+  <!-- Eje real -->
+  <text x="30" y="110" font-size="14" font-weight="700" fill="#0f3d5c">Reloj real (hilo de la corrida)</text>
+  <line x1="250" y1="105" x2="1120" y2="105" stroke="#8695a3" stroke-width="2"/>
+  <g stroke="#0e8a9a" stroke-width="2">
+    <line x1="250" y1="97" x2="250" y2="113"/><line x1="320" y1="97" x2="320" y2="113"/><line x1="390" y1="97" x2="390" y2="113"/>
+    <line x1="460" y1="97" x2="460" y2="113"/><line x1="530" y1="97" x2="530" y2="113"/><line x1="600" y1="97" x2="600" y2="113"/>
+    <line x1="670" y1="97" x2="670" y2="113"/><line x1="740" y1="97" x2="740" y2="113"/><line x1="810" y1="97" x2="810" y2="113"/>
+    <line x1="880" y1="97" x2="880" y2="113"/><line x1="950" y1="97" x2="950" y2="113"/><line x1="1020" y1="97" x2="1020" y2="113"/>
+    <line x1="1090" y1="97" x2="1090" y2="113"/>
+  </g>
+  <text x="252" y="132" font-size="12" fill="#0e8a9a">Sc: cada 100 ms reales el reloj avanza ≈ 16 s simulados (5D/colapso a 160×; día a día 1:1)</text>
+
+  <!-- Eje simulado -->
+  <text x="30" y="200" font-size="14" font-weight="700" fill="#0f3d5c">Tiempo simulado</text>
+  <line x1="250" y1="195" x2="1120" y2="195" stroke="#8695a3" stroke-width="2"/>
+  <g font-size="12" fill="#4a5a67">
+    <text x="240" y="216">00:00</text><text x="525" y="216">01:00</text><text x="810" y="216">02:00</text><text x="1085" y="216">03:00</text>
+  </g>
+  <!-- ventanas Sa -->
+  <g fill="#0f3d5c" opacity="0.10"><rect x="250" y="160" width="285" height="35"/><rect x="820" y="160" width="285" height="35"/></g>
+  <g fill="#0f3d5c" opacity="0.18"><rect x="535" y="160" width="285" height="35"/></g>
+  <g stroke="#0f3d5c" stroke-width="3"><line x1="250" y1="150" x2="250" y2="200"/><line x1="535" y1="150" x2="535" y2="200"/><line x1="820" y1="150" x2="820" y2="200"/><line x1="1105" y1="150" x2="1105" y2="200"/></g>
+  <text x="560" y="155" font-size="12" font-weight="700" fill="#0f3d5c">Sa = 60 min simulados (ventana de planificación, configurable 5–240 min)</text>
+
+  <!-- Eventos consumidos -->
+  <g font-size="11.5">
+    <circle cx="372" cy="250" r="7" fill="#2e7d46"/><text x="384" y="254" fill="#1c2b36">pedido 00:26 (ventas.202609)</text>
+    <circle cx="460" cy="276" r="7" fill="#2e7d46"/><text x="472" y="280" fill="#1c2b36">pedido 00:44</text>
+    <rect x="640" y="243" width="14" height="14" fill="#8e24aa"/><text x="660" y="254" fill="#1c2b36">inicio de bloqueo (bloqueo.2609)</text>
+    <polygon points="700,266 708,282 692,282" fill="#e8730c"/><text x="714" y="280" fill="#1c2b36">avería programada (semilla) o manual</text>
+    <circle cx="900" cy="250" r="7" fill="#c98a10"/><text x="912" y="254" fill="#1c2b36">llegada / fin de entrega / regreso</text>
+  </g>
+  <line x1="372" y1="243" x2="372" y2="195" stroke="#2e7d46" stroke-dasharray="3 3"/>
+  <line x1="460" y1="269" x2="460" y2="195" stroke="#2e7d46" stroke-dasharray="3 3"/>
+  <line x1="647" y1="243" x2="647" y2="195" stroke="#8e24aa" stroke-dasharray="3 3"/>
+  <line x1="700" y1="266" x2="700" y2="195" stroke="#e8730c" stroke-dasharray="3 3"/>
+
+  <!-- Caja del ciclo -->
+  <rect x="30" y="310" width="1100" height="270" rx="10" fill="#f4f7fa" stroke="#c3cfda"/>
+  <text x="50" y="340" font-size="15" font-weight="700" fill="#0f3d5c">En cada paso Sc (MotorSimulacion.avanzarHasta), los eventos se procesan en orden de tiempo hasta la hora objetivo:</text>
+  <g font-size="13" fill="#1c2b36">
+    <text x="60" y="368">1. Ingresan los pedidos cuya hora de registro ya llegó (archivo de ventas del mes, registro manual en el mapa o en «Pedidos», carga masiva).</text>
+    <text x="60" y="392">2. Hitos de las unidades: llegada al cliente (el plazo se cumple al llegar, P11), 1 h de acondicionamiento por entrega (P14) y regreso al almacén.</text>
+    <text x="60" y="416">3. Inicio de mantenimiento (00:00, P19: la unidad vuelve de inmediato), inicio de bloqueos (recalculan las unidades afectadas, vuelta en U) y averías.</text>
+    <text x="60" y="440">4. Recarga de los almacenes intermedios a las 23:59:59 (1 000 unid.) y cierre del día; los datos del mes siguiente se cargan 72 h antes de que empiece.</text>
+    <text x="60" y="464">5. Si se llegó a una frontera Sa (o hubo un pedido manual, avería o mantenimiento), corre el planificador (GA o ACO) con los pedidos pendientes</text>
+    <text x="78" y="484">y las unidades libres: Ta ≈ 3–7 ms promedio por ventana (máx. 12–37 ms medido en 5D). Se despachan las rutas y se verifica el colapso.</text>
+    <text x="60" y="508">6. Cada 250 ms reales se publica el estado (EstadoVisual) para los navegadores; entre publicaciones cada navegador interpola posiciones.</text>
+  </g>
+  <text x="50" y="548" font-size="12.5" fill="#4a5a67">Eventos que caen a menos de 1e-9 h entre sí se procesan juntos en la hora del último (así, una ventana Sa que coincide con el inicio de un bloqueo ya lo ve vigente).</text>
+  <text x="50" y="568" font-size="12.5" fill="#4a5a67">Una 5D completa sin reloj (solo cómputo) toma &lt; 1 s; con el reloj del escenario dura la duración objetivo (30–60 min, por defecto 45).</text>
+</svg>

@@ -1,0 +1,47 @@
+PaqRap - version final sem11 (2.a revision, 28/10/2026)
+=======================================================
+
+Base: sol.integrada.sem10. Cambios para alinear el software con el enunciado y con
+Preguntas y Respuestas (P&R), y con la hoja de evaluacion 91.EvaSw.
+
+Correcciones del planificador / simulacion (backend)
+1. Bloqueos (P7): el recalculo al iniciar un bloqueo se hace en la hora exacta de inicio, y los
+   eventos "simultaneos" (diferencias de ~1e-12 h) se procesan juntos en la hora del ultimo.
+   Antes, algunas rutas recalculadas o planificadas en ese mismo instante no veian el bloqueo y
+   lo atravesaban (6 a 11 casos por corrida 5D).
+2. Vuelta en U (P7): la unidad que llego a un nodo bloqueado desde una calle abierta (por ejemplo,
+   para entregar) sale por donde vino; antes podia seguir de largo o girar.
+3. Mantenimiento (P19, nota 2): si a las 00:00 de su mantenimiento una unidad aun lleva pedidos,
+   retorna de inmediato a su almacen y sus entregas se vuelven a planificar.
+4. Velocidades en caliente (P6, P16, P17): al cambiar la velocidad de un tipo de unidad, en la
+   siguiente ventana de planificacion las unidades en ruta recalculan su recorrido.
+5. Estado del mapa: minuto de inicio del tramo de retorno, km recorridos en la ruta y almacen
+   de origen de cada unidad.
+
+Visualizador (frontend)
+6. Ruta en dos tramos: hacia los clientes (azul, guiones) y retorno al almacen (turquesa,
+   punteado), con leyenda (observacion del profesor).
+7. Mapa siempre completo: empieza bajo la franja de controles (la ciudad 70 x 50 no se tapa).
+8. Barra del mapa con los 4 tiempos (simulado, transcurrido simulado, actual, transcurrido real)
+   y la ocupacion global de flota y almacenes con semaforo, siempre visibles.
+9. Parametros: las velocidades por tipo se pueden cambiar con la corrida en curso
+   ("Aplicar velocidades a la corrida en curso").
+10. Panel Transporte: busqueda por km al destino / desde el origen, orden por km por recorrer /
+    recorridos (ademas de ocupacion, salida y llegada), filtros por tipo y por almacen de origen
+    compartidos con el mapa. Panel Envios: "a entregar en las proximas X h" y "entregados en las
+    ultimas X h".
+
+Documentacion
+- docs/diagrama-consumo-datos-Sc-Sa.svg: como se consumen los datos (Sc) por bloque del
+  planificador (Sa).
+- docs/diagrama-varios-navegadores.svg: varios navegadores sobre una sola corrida.
+
+Verificacion
+- Compilacion completa (tipos del visualizador + backend) y 18 pruebas automaticas en verde
+  (1 omitida a proposito: exploracion de colapso). Nueva prueba: cambio de velocidad en caliente.
+- Auditoria minuto a minuto de 5D (GA y ACO; 01/09/2026, 30/09/2026 12:00 y 10/03/2027 06:00)
+  y del colapso: sin exceso de capacidad, sin stock negativo ni sobre 1 000, inmovilizacion
+  correcta por tipo de averia y sin unidades con pedidos durante su mantenimiento.
+- 5D desde 01/09/2026 con GA: 795 pedidos, 0 entregados fuera de plazo.
+- Ta: 3-7 ms promedio por ventana (max. 12-37 ms). Sa: 60 min simulados. Sc: 100 ms reales
+  (~16 s simulados en 5D a 160x).

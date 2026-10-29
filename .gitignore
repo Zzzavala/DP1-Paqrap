@@ -1,0 +1,27 @@
+# Compilados (se regeneran con COMPILAR.bat)
+dist/
+backend/target/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.vercel/
+
+# Datos y bitacoras locales del servicio
+datos-app/
+datos-externos/
+logs/
+*.log
+*.mv.db
+*.trace.db
+
+# Variables de entorno (solo se versiona el ejemplo)
+.env
+.env.*
+!.env.example
+
+# IDE y sistema operativo
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db

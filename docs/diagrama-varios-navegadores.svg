@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 620" width="1160" height="620" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="1160" height="620" fill="#ffffff"/>
+  <defs>
+    <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f3d5c"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+  </defs>
+  <text x="30" y="38" font-size="22" font-weight="700" fill="#0f3d5c">PaqRap · Varios navegadores durante la simulación del periodo (un único planificador)</text>
+  <text x="30" y="62" font-size="13" fill="#4a5a67">Una sola corrida vive en el servidor; todos los dispositivos la ven y la operan. Lo visual (zona, zoom, filtros, panel, selección) es local a cada navegador.</text>
+
+  <!-- Servidor -->
+  <rect x="380" y="90" width="400" height="300" rx="12" fill="#f4f7fa" stroke="#0f3d5c" stroke-width="2"/>
+  <text x="400" y="118" font-size="16" font-weight="700" fill="#0f3d5c">Servidor PaqRap (Spring Boot, Java 21)</text>
+  <rect x="400" y="132" width="360" height="92" rx="8" fill="#ffffff" stroke="#c3cfda"/>
+  <text x="414" y="154" font-size="13" font-weight="700" fill="#1c2b36">Hilo de la corrida (Corrida + MotorSimulacion)</text>
+  <text x="414" y="174" font-size="12" fill="#1c2b36">• avanza el reloj cada 100 ms reales (Sc)</text>
+  <text x="414" y="192" font-size="12" fill="#1c2b36">• planifica cada 60 min simulados (Sa) con GA/ACO</text>
+  <text x="414" y="210" font-size="12" fill="#1c2b36">• un solo candado: eventos y comandos en orden</text>
+  <rect x="400" y="236" width="360" height="58" rx="8" fill="#ffffff" stroke="#c3cfda"/>
+  <text x="414" y="258" font-size="13" font-weight="700" fill="#1c2b36">Estado publicado (EstadoVisual) cada 250 ms</text>
+  <text x="414" y="278" font-size="12" fill="#1c2b36">reloj, factor, unidades + trayectorias, pedidos, almacenes…</text>
+  <rect x="400" y="306" width="360" height="66" rx="8" fill="#ffffff" stroke="#c3cfda"/>
+  <text x="414" y="328" font-size="13" font-weight="700" fill="#1c2b36">Persistencia (H2 / PostgreSQL vía JPA)</text>
+  <text x="414" y="348" font-size="12" fill="#1c2b36">corridas, eventos, rutas, cierre; reportes CSV</text>
+  <text x="414" y="364" font-size="12" fill="#1c2b36">(historial consultable desde cualquier navegador)</text>
+
+  <!-- Navegadores -->
+  <g>
+    <rect x="30" y="110" width="290" height="190" rx="10" fill="#ffffff" stroke="#0e8a9a" stroke-width="2"/>
+    <text x="46" y="136" font-size="15" font-weight="700" fill="#0e8a9a">Navegador A · laptop</text>
+    <text x="46" y="160" font-size="12" fill="#1c2b36">Vista completa, panel «Transporte»</text>
+    <text x="46" y="180" font-size="12" fill="#1c2b36">filtro: solo motos · ruta de TM05</text>
+    <text x="46" y="208" font-size="12" fill="#4a5a67">consulta GET /api/simulacion/estado</text>
+    <text x="46" y="226" font-size="12" fill="#4a5a67">cada 1 s; entre consultas extrapola</text>
+    <text x="46" y="244" font-size="12" fill="#4a5a67">el reloj con el factor y mueve las</text>
+    <text x="46" y="262" font-size="12" fill="#4a5a67">unidades sobre su trayectoria (60 fps)</text>
+    <text x="46" y="286" font-size="12" font-weight="700" fill="#1c2b36">Zona, zoom, filtros y selección: locales</text>
+  </g>
+  <g>
+    <rect x="840" y="110" width="290" height="190" rx="10" fill="#ffffff" stroke="#0e8a9a" stroke-width="2"/>
+    <text x="856" y="136" font-size="15" font-weight="700" fill="#0e8a9a">Navegador B · celular</text>
+    <text x="856" y="160" font-size="12" fill="#1c2b36">Cuadrante noreste, zoom con pellizco</text>
+    <text x="856" y="180" font-size="12" fill="#1c2b36">panel «Envíos» · pedido PV2609-0123</text>
+    <text x="856" y="208" font-size="12" fill="#4a5a67">mismo reloj y misma flota que A;</text>
+    <text x="856" y="226" font-size="12" fill="#4a5a67">entra en cualquier momento y ve</text>
+    <text x="856" y="244" font-size="12" fill="#4a5a67">el estado actual de la corrida</text>
+    <text x="856" y="286" font-size="12" font-weight="700" fill="#1c2b36">Zona, zoom, filtros y selección: locales</text>
+  </g>
+  <g>
+    <rect x="435" y="440" width="290" height="150" rx="10" fill="#ffffff" stroke="#0e8a9a" stroke-width="2"/>
+    <text x="451" y="466" font-size="15" font-weight="700" fill="#0e8a9a">Navegador C · otra PC</text>
+    <text x="451" y="490" font-size="12" fill="#1c2b36">Bloquea un tramo con un clic, registra</text>
+    <text x="451" y="508" font-size="12" fill="#1c2b36">una avería tipo 2 en TA03 o cambia la</text>
+    <text x="451" y="526" font-size="12" fill="#1c2b36">velocidad de las bicicletas en caliente</text>
+    <text x="451" y="554" font-size="12" font-weight="700" fill="#c0392b">Comandos: afectan a todos (respuesta</text>
+    <text x="451" y="572" font-size="12" font-weight="700" fill="#c0392b">del planificador visible en A, B y C)</text>
+  </g>
+
+  <!-- Flechas -->
+  <line x1="320" y1="190" x2="398" y2="250" stroke="#0f3d5c" stroke-width="2" marker-end="url(#f)" marker-start="url(#f)"/>
+  <text x="300" y="320" font-size="11.5" fill="#0f3d5c">GET estado (1 s)</text>
+  <line x1="840" y1="190" x2="762" y2="250" stroke="#0f3d5c" stroke-width="2" marker-end="url(#f)" marker-start="url(#f)"/>
+  <text x="790" y="320" font-size="11.5" fill="#0f3d5c">GET estado (1 s)</text>
+  <line x1="560" y1="440" x2="560" y2="392" stroke="#c0392b" stroke-width="2" marker-end="url(#g)"/>
+  <text x="566" y="420" font-size="11.5" fill="#c0392b">POST/PUT bloqueos · averías · pedidos · velocidades · umbrales</text>
+  <line x1="640" y1="392" x2="640" y2="438" stroke="#0f3d5c" stroke-width="2" marker-end="url(#f)"/>
+  <text x="646" y="436" font-size="11.5" fill="#0f3d5c"></text>
+</svg>
