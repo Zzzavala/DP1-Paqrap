@@ -355,6 +355,7 @@ export default function Pagina() {
 
       {seleccion && estado && (
         <ModalDetalle
+          key={`${seleccion.tipo}:${seleccion.id}`}
           seleccion={seleccion}
           enCurso={enCurso}
           diaADia={estado.escenario === 'TIEMPO_REAL'}
