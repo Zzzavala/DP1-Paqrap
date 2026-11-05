@@ -3,7 +3,7 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { AlmacenVisual, EstadoVisual, VehiculoVisual } from '@/lib/tipos';
 import {
-  BORDE_VACIO, COLOR_AVERIA, COLOR_BLOQUEO, COLOR_OCUPACION, COLOR_RETORNO, COLOR_RUTA, COLOR_SEMAFORO, porcentaje, type Semaforo,
+  BORDE_VACIO, COLOR_AVERIA, COLOR_BLOQUEO, COLOR_BLOQUEO_FRANJA, COLOR_OCUPACION, COLOR_RETORNO, COLOR_RUTA, COLOR_SEMAFORO, porcentaje, type Semaforo,
   semaforo, semaforoOcupacion, type SemaforoOcupacion,
 } from '@/lib/formato';
 import { posicionEnTrayectoria } from '@/lib/useEstadoSimulacion';
@@ -47,6 +47,24 @@ export function vistaDeZona(zona: string): Vista {
 export interface Seleccion {
   tipo: 'vehiculo' | 'pedido' | 'almacen';
   id: string;
+}
+
+/**
+ * Calle bloqueada con textura de cinta de cierre: borde oscuro, fondo amarillo y franjas negras alternadas.
+ * El mismo trazo se usa para bloqueos cargados por archivo y manuales (no deben distinguirse).
+ */
+function TrazoBloqueo({ puntos }: { puntos: string }) {
+  const comun = {
+    points: puntos, fill: 'none', strokeLinejoin: 'round' as const, vectorEffect: 'non-scaling-stroke' as const,
+  };
+  return (
+    <g>
+      <title>Calle bloqueada</title>
+      <polyline {...comun} stroke={COLOR_BLOQUEO_FRANJA} strokeWidth={8} strokeLinecap="round" />
+      <polyline {...comun} stroke={COLOR_BLOQUEO} strokeWidth={6} strokeLinecap="butt" />
+      <polyline {...comun} stroke={COLOR_BLOQUEO_FRANJA} strokeWidth={6} strokeLinecap="butt" strokeDasharray="5 5" />
+    </g>
+  );
 }
 
 export interface Filtros {
@@ -569,23 +587,19 @@ export default function MapaOperacion(props: Props) {
         <rect x={-50} y={-50} width={VB_W + 100} height={VB_H + 100} fill="#fbfcfe" />
         <Reticula escala={Math.round(escala * 1000) / 1000} />
 
-        {filtros.mostrarBloqueos &&
-          estado.bloqueos.map((b) => {
-            const pts: string[] = [];
-            for (let i = 0; i < b.puntos.length; i += 2) pts.push(`${b.puntos[i]},${sy(b.puntos[i + 1])}`);
-            return (
-              <polyline key={b.id} points={pts.join(' ')} fill="none" stroke={COLOR_BLOQUEO} strokeWidth={5}
-                strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" opacity={0.9}>
-                <title>{`Calle bloqueada (${b.id}) — dato real del curso`}</title>
-              </polyline>
-            );
-          })}
-        {estado.tramosManuales.map((t) => (
-          <line key={t.join('-')} x1={t[0]} y1={sy(t[1])} x2={t[2]} y2={sy(t[3])} stroke="#a15b16" strokeWidth={6}
-            strokeDasharray="5 4" vectorEffect="non-scaling-stroke">
-            <title>Calle bloqueada manualmente (clic para reabrir)</title>
-          </line>
-        ))}
+        {/* Bloqueos por archivo y manuales se dibujan igual (cinta de cierre): cumplen la misma funcion. */}
+        {filtros.mostrarBloqueos && (
+          <>
+            {estado.bloqueos.map((b) => {
+              const pts: string[] = [];
+              for (let i = 0; i < b.puntos.length; i += 2) pts.push(`${b.puntos[i]},${sy(b.puntos[i + 1])}`);
+              return <TrazoBloqueo key={'b-' + b.id} puntos={pts.join(' ')} />;
+            })}
+            {estado.tramosManuales.map((t) => (
+              <TrazoBloqueo key={'m-' + t.join('-')} puntos={`${t[0]},${sy(t[1])} ${t[2]},${sy(t[3])}`} />
+            ))}
+          </>
+        )}
 
         {rutas.map((r) => {
           const v = estado.vehiculos.find((x) => x.id === r.id)!;

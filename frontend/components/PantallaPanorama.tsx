@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { api } from '@/lib/api';
 import type { EstadoVisual } from '@/lib/tipos';
 import {
-  BORDE_VACIO, COLOR_BLOQUEO, COLOR_OCUPACION, COLOR_RETORNO, COLOR_RUTA, ETIQUETA_AVERIA, ETIQUETA_OCUPACION, numero, semaforo,
+  BORDE_VACIO, COLOR_OCUPACION, COLOR_RETORNO, COLOR_RUTA, ETIQUETA_AVERIA, ETIQUETA_OCUPACION, numero, semaforo,
   type SemaforoOcupacion, soles,
 } from '@/lib/formato';
 import MapaOperacion, {
@@ -295,8 +295,7 @@ export default function PantallaPanorama({ estado, minutoAhora, seleccion, onAbr
                 <svg width={18} height={18} viewBox="-9 -9 18 18" aria-hidden><InsigniaTaller x={0} y={0} /></svg>
                 Unidad en taller (visible con «Mostrar unidades en almacén»)
               </div>
-              <div className="legend-item"><span className="legend-line" style={{ borderColor: COLOR_BLOQUEO, borderTopWidth: 5 }} />Calle bloqueada (dato real del curso)</div>
-              <div className="legend-item"><span className="legend-line dashed" style={{ borderColor: '#a15b16', borderTopWidth: 5 }} />Calle bloqueada manualmente (clic en el mapa)</div>
+              <div className="legend-item"><span className="legend-bloqueo" />Calle bloqueada (por archivo o con clic en el mapa)</div>
               <div className="legend-item"><span className="legend-line dashed" style={{ borderColor: COLOR_RUTA }} />Ruta hacia los clientes (más tenue = vehículo no seleccionado)</div>
               <div className="legend-item"><span className="legend-line dotted" style={{ borderColor: COLOR_RETORNO }} />Retorno al almacén (después de la última entrega)</div>
               <div className="legend-item"><span className="hint">Retícula de 70 × 50 km; cada línea es una calle (1 km).</span></div>

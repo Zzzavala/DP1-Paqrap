@@ -75,8 +75,12 @@ export const ETIQUETA_AVERIA: Record<number, string> = {
 /** Clase CSS de la pildora (ocupacion-pill ocup-xxx). */
 export const claseOcupacion = (s: SemaforoOcupacion) => 'ocupacion-pill ocup-' + s;
 
-/** Color exclusivo de las calles bloqueadas (no se confunde con el rojo del semaforo). */
-export const COLOR_BLOQUEO = '#8e24aa';
+/**
+ * Calles bloqueadas: textura de cinta de cierre (amarillo con franjas negras). Es la misma para los bloqueos
+ * cargados por archivo y para los aplicados manualmente: ambos cumplen la misma funcion y no deben distinguirse.
+ */
+export const COLOR_BLOQUEO = '#f5c400';
+export const COLOR_BLOQUEO_FRANJA = '#1a1a1a';
 
 /** Ruta: tramo hacia los clientes (azul, guiones) y tramo de retorno al almacen (turquesa, punteado). */
 export const COLOR_RUTA = '#0f3d5c';
